@@ -1,0 +1,6 @@
+target/
+*.dll
+.env
+*-shm
+*-wal
+dump*
