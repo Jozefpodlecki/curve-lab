@@ -6,7 +6,6 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct LoadResult {
     pub app_name: String,
-    pub rust_version: String,
     pub github_link: String,
     pub version: String,
     pub loaded_on: DateTime<Utc>,

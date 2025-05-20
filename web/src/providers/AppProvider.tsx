@@ -3,7 +3,6 @@ import { load } from "../api";
 
 const defaultState = {
 	appName: "",
-    rustVersion: "",
     githubLink: "",
     version: "",
 	isLoading: true,
@@ -18,7 +17,6 @@ export function useApp(): AppState {
 
 export interface AppState {
 	appName: string,
-    rustVersion: string,
     githubLink: string,
     version: string,
 	isLoading: boolean;
