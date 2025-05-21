@@ -3,6 +3,7 @@ import Home from "./Home";
 import { useApp } from "./providers/AppProvider";
 import Sidebar from "./components/Sidebar";
 import Butterfly from "./components/Butterfly";
+import Rose from "./components/Rose";
 
 const App: React.FC = () => {
 	const app = useApp();
@@ -17,6 +18,7 @@ const App: React.FC = () => {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/butterfly" element={<Butterfly />} />
+						<Route path="/rose" element={<Rose />} />
 					</Routes>
 				</section>
 			</div>
