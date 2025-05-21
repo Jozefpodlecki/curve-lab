@@ -1,13 +1,10 @@
-import { Link } from "react-router-dom";
-import { IconDualScreen, IconFlask2 } from "@tabler/icons-react";
 import TopBar from "./components/TopBar";
+import Sidebar from "./components/Sidebar";
 
 const Home: React.FC = () => {
 
     return (
-        <section className="h-full w-full flex flex-col">
-          
-        </section>
+        <div></div>
     );
 };
 
