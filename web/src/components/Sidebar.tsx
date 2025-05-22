@@ -6,7 +6,8 @@ const Sidebar: React.FC = () => {
 
     const navItems = [
         { to: "/butterfly", icon: IconButterfly, label: "Butterfly Curve" },
-        { to: "/rose", icon: IconFlower, label: "Rose Curve" }
+        { to: "/rose", icon: IconFlower, label: "Rose Curve" },
+        { to: "/lissajous", icon: IconFlower, label: "Lissajous Curve" }
     ];
 
     return (

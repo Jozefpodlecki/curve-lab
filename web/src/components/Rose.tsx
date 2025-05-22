@@ -25,11 +25,13 @@ const Rose: React.FC = () => {
         ctx.translate(width / 2, height / 2);
 
         ctx.beginPath();
+        console.log(k);
         for (let i = 0; i <= points; i++) {
             const theta = (2 * Math.PI * i) / points;
             const r = mode === "cos" ? Math.cos(k * theta) : Math.sin(k * theta);
             const x = r * Math.cos(theta) * scale;
             const y = r * Math.sin(theta) * scale;
+            // console.log(x,y);
             if (i === 0) ctx.moveTo(x, -y);
             else ctx.lineTo(x, -y);
         }
@@ -47,18 +49,36 @@ const Rose: React.FC = () => {
     return (
         <div className="flex flex-col h-full bg-gray-800 text-white">
             <div className="p-4 flex flex-wrap gap-6 items-center border-b border-gray-700">
-               <label className="flex items-center gap-2 text-sm">
-                    k:
-                    <input
-                        type="number"
-                        min="0.1"
-                        max="20"
-                        step="0.1"
-                        value={k}
-                        onChange={(e) => setK(parseFloat(e.target.value))}
-                        className="w-24 bg-gray-700 text-white rounded px-2 py-1"
-                    />
-                </label>
+               k:
+                <input
+                    type="number"
+                    min="0.1"
+                    max="20"
+                    step="0.1"
+                    value={k}
+                    onChange={(e) => setK(parseFloat(e.target.value))}
+                    className="w-24 bg-gray-700 text-white rounded px-2 py-1"
+                />
+                <div className="flex gap-1">
+                    <button
+                        onClick={() => setK(Math.PI)}
+                        className="bg-gray-700 px-2 py-1 rounded hover:bg-gray-600"
+                    >
+                        π
+                    </button>
+                    <button
+                        onClick={() => setK(Math.SQRT2)}
+                        className="bg-gray-700 px-2 py-1 rounded hover:bg-gray-600"
+                    >
+                        √2
+                    </button>
+                    <button
+                        onClick={() => setK(Math.E)}
+                        className="bg-gray-700 px-2 py-1 rounded hover:bg-gray-600"
+                    >
+                        e
+                    </button>
+                </div>
                 <label className="flex items-center gap-2 text-sm">
                     Scale:
                     <input
