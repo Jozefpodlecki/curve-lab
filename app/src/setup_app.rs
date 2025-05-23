@@ -1,12 +1,9 @@
 use anyhow::*;
 use log::*;
-use sqlx::{
-    Sqlite,
-    migrate::MigrateDatabase,
-    sqlite::SqlitePoolOptions,
-};
+use sqlx::{Sqlite, migrate::MigrateDatabase, sqlite::SqlitePoolOptions};
 use std::sync::Arc;
 use tauri::{App, AppHandle, Manager};
+use tauri_plugin_updater::UpdaterExt;
 
 use crate::services::AppReadyState;
 
@@ -22,12 +19,22 @@ pub fn setup_app(app: &mut App) -> std::result::Result<(), Box<dyn std::error::E
     let app = app.handle().clone();
 
     tokio::spawn(async move {
+        check_updates(app.clone()).await?;
+
         if let Err(err) = setup_db(app).await {
             error!("{}", err);
         }
+
+        Ok(())
     });
 
     std::result::Result::Ok(())
+}
+
+async fn check_updates(app: AppHandle) -> Result<()> {
+    let updates = app.updater()?.check().await.ok();
+
+    Ok(())
 }
 
 async fn setup_db(app: AppHandle) -> Result<()> {

@@ -3,9 +3,7 @@ use std::sync::Arc;
 use chrono::Utc;
 use tauri::{AppHandle, State, command};
 
-use crate::{
-    error::AppError, models::LoadResult, services::AppReadyState,
-};
+use crate::{error::AppError, models::LoadResult, services::AppReadyState};
 
 #[command]
 pub async fn load(

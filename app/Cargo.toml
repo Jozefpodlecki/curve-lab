@@ -27,3 +27,6 @@ anyhow = "1.0.96"
 uuid = { version = "1", features = ["v4"] }
 tauri-plugin-log = "2"
 tauri-plugin-dialog = "2"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"
