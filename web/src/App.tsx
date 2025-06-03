@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Butterfly from "./components/Butterfly";
 import Rose from "./components/Rose";
 import Lissajous from "./components/Lissajous";
+import Fractal from "./components/Fractal";
 
 const App: React.FC = () => {
 	const app = useApp();
@@ -21,6 +22,7 @@ const App: React.FC = () => {
 						<Route path="/butterfly" element={<Butterfly />} />
 						<Route path="/rose" element={<Rose />} />
 						<Route path="/lissajous" element={<Lissajous />} />
+						<Route path="/fractal" element={<Fractal />} />
 					</Routes>
 				</section>
 			</div>
