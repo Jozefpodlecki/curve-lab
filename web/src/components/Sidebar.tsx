@@ -1,14 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
-import { IconButterfly, IconFlower } from "@tabler/icons-react";
+import {
+  IconButterfly,
+  IconRosette,
+  IconInfinity,
+  IconTree,
+} from "@tabler/icons-react";
 
 const Sidebar: React.FC = () => {
     const location = useLocation();
 
     const navItems = [
         { to: "/butterfly", icon: IconButterfly, label: "Butterfly Curve" },
-        { to: "/rose", icon: IconFlower, label: "Rose Curve" },
-        { to: "/lissajous", icon: IconFlower, label: "Lissajous Curve" },
-        { to: "/fractal", icon: IconFlower, label: "Fractal" },
+        { to: "/rose", icon: IconRosette, label: "Rose Curve" },
+        { to: "/lissajous", icon: IconInfinity, label: "Lissajous Curve" },
+        { to: "/fractal", icon: IconTree, label: "Fractal" },
     ];
 
     return (
