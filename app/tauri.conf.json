@@ -21,6 +21,11 @@
     }
   },
   "bundle": {
+    "windows": {
+        "certificateThumbprint": "AD4886F35EE10A64783F30170D1745D4B494A1BC",
+        "digestAlgorithm": "sha256",
+        "timestampUrl": "http://timestamp.comodoca.com"
+    },
     "createUpdaterArtifacts": true,
     "active": true,
     "targets": "all",
@@ -37,7 +42,7 @@
        "windows": {
         "installMode": "passive"
       },
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5QXR3N0Vuczc3cDFGbVJsUDZORlJ0Sk9SY0R6OFBRTldwdjkrbTJsRHR3Z0FBQkFBQUFBQUFBQUFBQUlBQUFBQUlwSmNBOEhYVnlGNkxOOEdpL0VOcEVoNm9LTHRmODlWOGUrQjN1aEM4SXN4WVRKaE9EQ25pa3pmUmgzRE1yOWxUMGkvaHZJR0U5WVZJMDBvaUFhalV6K2pxY3RqQXhaTERzWG9DRGtLUzd5Y21Md0R3VUZYa1hDYlpialIyRkZ4cnhjbGZ5SS8yWmc9Cg==",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEVBMTMwRDJFRjQyNjI5MUYKUldRZktTYjBMZzBUNnFSSUpUVElsa1JWWEI3TURvS0t6aStCaE1BUnpGZU1HSGQvSXFocUNudWUK",
       "endpoints": [
         "https://github.com/user/repo/releases/latest/download/latest.json"
       ]

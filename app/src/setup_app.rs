@@ -7,11 +7,20 @@ use tauri_plugin_updater::UpdaterExt;
 
 use crate::services::AppReadyState;
 
+#[cfg(debug_assertions)]
+fn open_devtools(window: tauri::WebviewWindow) {
+    window.open_devtools();
+}
+
+#[cfg(not(debug_assertions))]
+fn open_devtools(window: tauri::WebviewWindow) {
+}
+
 pub fn setup_app(app: &mut App) -> std::result::Result<(), Box<dyn std::error::Error>> {
-    let window = app.get_webview_window("main").unwrap();
+    let window= app.get_webview_window("main").unwrap();
 
     window.maximize()?;
-    window.open_devtools();
+    open_devtools(window);
 
     let app_ready_state = Arc::new(AppReadyState::new());
     app.manage(app_ready_state);
