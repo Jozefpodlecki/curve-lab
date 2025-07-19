@@ -19,14 +19,17 @@ jobs:
           cache: 'npm'
       - run: npm ci
         working-directory: ./web
+
       - run: npm run build
         working-directory: ./web        
+
       - name: import windows certificate
         shell: pwsh
         env:
           WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         run: ./import-certificate.ps1
+        
       - uses: dtolnay/rust-toolchain@1.85.0
       - uses: tauri-apps/tauri-action@v0
         env:
