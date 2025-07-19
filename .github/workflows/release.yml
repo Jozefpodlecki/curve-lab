@@ -19,6 +19,8 @@ jobs:
           cache: 'npm'
       - run: npm ci
         working-directory: ./web
+      - run: npm run build
+        working-directory: ./web        
       - name: import windows certificate
         shell: pwsh
         env:
