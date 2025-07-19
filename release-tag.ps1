@@ -3,3 +3,4 @@ Set-Location app
 $version = $matches[1]
 git tag "v$version"
 git push origin "v$version"
+Set-Location ..
