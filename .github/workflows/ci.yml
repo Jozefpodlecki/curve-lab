@@ -21,6 +21,12 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+      - run: |
+          $msg = git log -1 --pretty=%B
+          Write-Output "Commit message: '$msg'"
+          if ($msg -match '\[skip ci\]') {
+            throw "Skipping CI as requested."
+          }
       - uses: taiki-e/install-action@cargo-llvm-cov
         continue-on-error: true
       - run: cargo llvm-cov --lcov --output-path lcov.info
