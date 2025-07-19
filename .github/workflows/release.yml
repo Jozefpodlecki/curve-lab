@@ -20,15 +20,11 @@ jobs:
       - run: npm ci
         working-directory: ./web
       - name: import windows certificate
+        shell: pwsh
         env:
           WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
-        run: |
-          New-Item -ItemType directory -Path certificate | Out-Null
-          Set-Content -Path certificate/tempCert.txt -Value $env:WINDOWS_CERTIFICATE
-          certutil -decode certificate/tempCert.txt certificate/certificate.pfx
-          Remove-Item -path certificate -include tempCert.txt
-          Import-PfxCertificate -FilePath certificate/certificate.pfx -CertStoreLocation Cert:\CurrentUser\My -Password (ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -Force -AsPlainText)
+        run: ./import-certificate.ps1
       - uses: dtolnay/rust-toolchain@1.85.0
       - uses: tauri-apps/tauri-action@v0
         env:
