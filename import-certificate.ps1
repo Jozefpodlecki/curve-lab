@@ -1,5 +1,30 @@
-New-Item -ItemType directory -Path certificate | Out-Null
-Set-Content -Path certificate/tempCert.txt -Value $env:WINDOWS_CERTIFICATE
-certutil -decode certificate/tempCert.txt certificate/certificate.pfx | Out-Null
-Remove-Item -path certificate -include tempCert.txt
-Import-PfxCertificate -FilePath certificate/certificate.pfx -CertStoreLocation Cert:\CurrentUser\My -Password (ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -Force -AsPlainText) | Out-Null
+$certTempDirectory = "certificate"
+$base64CertPath = Join-Path $certTempDirectory "cert.txt"
+$pfxCertPath = Join-Path $certTempDirectory "cert.pfx"
+$configFile = "app/tauri.conf.json"
+$certStoreLocation = "Cert:\CurrentUser\My"
+
+if (-not (Test-Path $certTempDirectory)) {
+    New-Item -ItemType Directory -Path $certTempDirectory | Out-Null
+}
+
+try {
+    Set-Content -Path $base64CertPath -Value $env:WINDOWS_CERTIFICATE -Force
+
+    certutil -decode $base64CertPath $pfxCertPath | Out-Null
+    $password = ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+
+    $cert = Import-PfxCertificate -FilePath $pfxCertPath `
+        -CertStoreLocation $certStoreLocation `
+        -Password $password
+
+    Remove-Item -Path $certTempDirectory -Recurse -Force
+
+    $json = Get-Content $configFile -Raw | ConvertFrom-Json
+    $json.bundle.windows.certificateThumbprint = $cert.Thumbprint
+    $json | ConvertTo-Json -Depth 10 | Set-Content -Path $configFile -Force
+}
+catch {
+    Write-Error "An error occurred: $_"
+    exit 1
+}
