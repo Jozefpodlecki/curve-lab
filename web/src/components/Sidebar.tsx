@@ -11,6 +11,7 @@ const Sidebar: React.FC = () => {
 
     const navItems = [
         { to: "/butterfly", icon: IconButterfly, label: "Butterfly Curve" },
+        { to: "/ifsfractal", icon: IconButterfly, label: "IFS Fractal" },
         { to: "/rose", icon: IconRosette, label: "Rose Curve" },
         { to: "/lissajous", icon: IconInfinity, label: "Lissajous Curve" },
         { to: "/fractal", icon: IconTree, label: "Fractal" },

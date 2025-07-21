@@ -5,6 +5,7 @@ import Butterfly from "./components/Butterfly";
 import Rose from "./components/Rose";
 import Lissajous from "./components/Lissajous";
 import Fractal from "./components/Fractal";
+import IFSFractal from "./components/IFSFractal";
 
 const App: React.FC = () => {
 	// const app = useApp();
@@ -19,6 +20,7 @@ const App: React.FC = () => {
 					<Routes>
 						{/* <Route path="/" element={<Home />} /> */}
 						<Route path="/butterfly" element={<Butterfly />} />
+						<Route path="/ifsfractal" element={<IFSFractal />} />
 						<Route path="/rose" element={<Rose />} />
 						<Route path="/lissajous" element={<Lissajous />} />
 						<Route path="/fractal" element={<Fractal />} />

@@ -5,6 +5,8 @@
   "identifier": "com.curve-lab",
   "build": {
     "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "cd ../web && npm run dev",
+    "beforeBuildCommand": "cd ../web && npm run build",
     "frontendDist": "../web/dist"
   },
   "app": {

@@ -41,7 +41,16 @@ pub fn setup_app(app: &mut App) -> std::result::Result<(), Box<dyn std::error::E
 }
 
 async fn check_updates(app: AppHandle) -> Result<()> {
-    let updates = app.updater()?.check().await.ok();
+    let updates = app.updater()?.check().await.ok().flatten();
+
+    match updates {
+        Some(update) => {
+            info!("{} {}", update.current_version, update.version);
+        },
+        None => {
+            info!("No updates available")
+        },
+    }
 
     Ok(())
 }
