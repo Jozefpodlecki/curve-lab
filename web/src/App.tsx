@@ -1,14 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-// import { useApp } from "./providers/AppProvider";
 import Sidebar from "./components/Sidebar";
-import Butterfly from "./components/Butterfly";
-import Rose from "./components/Rose";
-import Lissajous from "./components/Lissajous";
-import Fractal from "./components/Fractal";
-import IFSFractal from "./components/IFSFractal";
+import { routes } from "./routes";
 
 const App: React.FC = () => {
-	// const app = useApp();
 	
 	return (
 	<main className="">
@@ -18,12 +12,9 @@ const App: React.FC = () => {
 				{/* <TopBar /> */}
 				<section className="h-full">
 					<Routes>
-						{/* <Route path="/" element={<Home />} /> */}
-						<Route path="/butterfly" element={<Butterfly />} />
-						<Route path="/ifsfractal" element={<IFSFractal />} />
-						<Route path="/rose" element={<Rose />} />
-						<Route path="/lissajous" element={<Lissajous />} />
-						<Route path="/fractal" element={<Fractal />} />
+						{routes.map(({ path, element }) => (
+							<Route key={path} path={path} element={element} />
+						))}
 					</Routes>
 				</section>
 			</div>
