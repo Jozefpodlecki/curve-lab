@@ -53,3 +53,7 @@ MIT
 ---
 
 > This project is a template for experimenting with mathematical curve visualizations in a modern desktop app.
+
+## Credits
+
+<a href="https://www.flaticon.com/free-icons/geometry" title="geometry icons">Geometry icons created by Chattapat - Flaticon</a>
