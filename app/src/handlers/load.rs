@@ -2,22 +2,23 @@ use std::sync::Arc;
 
 use chrono::Utc;
 use tauri::{AppHandle, State, command};
+use uuid::Uuid;
 
-use crate::{error::AppError, models::LoadResult, services::AppReadyState};
+use crate::{error::AppError, models::{AppContext, LoadResult}, services::AppReadyState};
 
 #[command]
-pub async fn load(
-    app_ready_state: State<'_, Arc<AppReadyState>>,
-    app_handle: AppHandle,
+pub async fn load<'a>(
+    app_ready_state: State<'a, Arc<AppReadyState>>,
+    app_context: State<'a, AppContext>,
 ) -> Result<LoadResult, AppError> {
     app_ready_state.mark_ready();
 
-    let version = app_handle.package_info().version.to_string();
     let result = LoadResult {
-        app_name: "Rust Playground".into(),
-        github_link: env!("CARGO_PKG_REPOSITORY").to_string(),
-        loaded_on: Utc::now(),
-        version,
+        id: app_context.id,
+        app_name: app_context.app_name.clone(),
+        github_link: app_context.github_link.clone(),
+        loaded_on: app_context.loaded_on,
+        version: app_context.version.clone(),
     };
 
     Ok(result)

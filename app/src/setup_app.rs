@@ -1,34 +1,50 @@
 use anyhow::*;
+use chrono::Utc;
 use log::*;
+use serde::{Deserialize, Serialize};
 use sqlx::{Sqlite, migrate::MigrateDatabase, sqlite::SqlitePoolOptions};
-use std::sync::Arc;
-use tauri::{App, AppHandle, Manager};
+use tokio::time::sleep;
+use uuid::Uuid;
+use std::{sync::Arc, time::Duration};
+use tauri::{App, AppHandle, Emitter, EventTarget, Manager};
 use tauri_plugin_updater::UpdaterExt;
 
-use crate::services::AppReadyState;
-
-#[cfg(debug_assertions)]
-fn open_devtools(window: tauri::WebviewWindow) {
-    window.open_devtools();
-}
-
-#[cfg(not(debug_assertions))]
-fn open_devtools(window: tauri::WebviewWindow) {
-}
+use crate::{models::AppContext, services::AppReadyState};
 
 pub fn setup_app(app: &mut App) -> std::result::Result<(), Box<dyn std::error::Error>> {
     let window= app.get_webview_window("main").unwrap();
 
+    let package_info = app.package_info();
+    let app_name = package_info.name.clone();
+    let version = package_info.version.to_string();
+
+    let app_context = AppContext {
+        id: Uuid::now_v7(),
+        app_name,
+        github_link: env!("CARGO_PKG_REPOSITORY").to_string(),
+        loaded_on: Utc::now(),
+        version,
+    };
+
+    app.manage(app_context);
+
+    let title = format!("{} v{}", package_info.name, package_info.version);
+    window.set_title(&title).unwrap();
+
     window.maximize()?;
-    open_devtools(window);
+    #[cfg(debug_assertions)]
+    {
+        window.open_devtools();
+    }
+    
 
     let app_ready_state = Arc::new(AppReadyState::new());
-    app.manage(app_ready_state);
+    app.manage(app_ready_state.clone());
 
     let app = app.handle().clone();
 
     tokio::spawn(async move {
-        check_updates(app.clone()).await?;
+        check_updates(app_ready_state, app.clone()).await?;
 
         if let Err(err) = setup_db(app).await {
             error!("{}", err);
@@ -40,15 +56,30 @@ pub fn setup_app(app: &mut App) -> std::result::Result<(), Box<dyn std::error::E
     std::result::Result::Ok(())
 }
 
-async fn check_updates(app: AppHandle) -> Result<()> {
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(tag = "type", content = "version")]
+enum UpdateCheckResult {
+    Latest,
+    NewVersion(String)
+}
+
+async fn check_updates(app_ready_state: Arc<AppReadyState>, app: AppHandle) -> Result<()> {
+    app_ready_state.wait_for_ready().await;
     let updates = app.updater()?.check().await.ok().flatten();
 
     match updates {
         Some(update) => {
             info!("{} {}", update.current_version, update.version);
+
+            app.emit("update", UpdateCheckResult::NewVersion(update.version.clone()))?;
+
+            sleep(Duration::from_secs(2)).await;
+
+            update.download_and_install(|_, _| {}, || {}).await?;
+            app.restart();
         },
         None => {
-            info!("No updates available")
+            app.emit("update", UpdateCheckResult::Latest)?;
         },
     }
 

@@ -24,7 +24,7 @@ thiserror = "2.0.12"
 log = "0.4.22"
 sqlx = { version = "0.8.5", features = [ "runtime-tokio", "sqlite", "uuid", "chrono" ] }
 anyhow = "1.0.96"
-uuid = { version = "1", features = ["v4"] }
+uuid = { version = "1", features = ["v4", "v7"] }
 tauri-plugin-log = "2"
 tauri-plugin-dialog = "2"
 

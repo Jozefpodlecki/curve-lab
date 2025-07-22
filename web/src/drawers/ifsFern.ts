@@ -6,19 +6,19 @@ export function drawBarnsleyFern(ctx: CanvasRenderingContext2D, width: number, h
 		{ a: -0.15, b: 0.28, c: 0.26, d: 0.24, e: 0, f: 0.44, p: 0.07 },
 	];
 
-  const chooseTransform = () => {
-		const r = Math.random();
-		let sum = 0;
+	const chooseTransform = () => {
+			const r = Math.random();
+			let sum = 0;
 
-		for (const t of transforms) {
-			sum += t.p;
-			
-			if (r <= sum) {
-				return t;
+			for (const t of transforms) {
+				sum += t.p;
+				
+				if (r <= sum) {
+					return t;
+				}
 			}
-		}
 
-		return transforms[transforms.length - 1];
+			return transforms[transforms.length - 1];
 	};
 
 	ctx.fillStyle = "black";
@@ -31,11 +31,11 @@ export function drawBarnsleyFern(ctx: CanvasRenderingContext2D, width: number, h
 
 	const padding = 20; 
 	const scaleX = (width - 2 * padding) / 6;
-  	const scaleY = (height - 2 * padding) / 10;
+	const scaleY = (height - 2 * padding) / 10;
 	const offsetX = padding + (width - 2 * padding) / 2;
 	const offsetY = height - padding;
 
-  	for (let i = 0; i < totalPoints; i++) {
+	for (let i = 0; i < totalPoints; i++) {
 		const t = chooseTransform();
 
 		const newX = t.a * x + t.b * y + t.e;
@@ -48,5 +48,5 @@ export function drawBarnsleyFern(ctx: CanvasRenderingContext2D, width: number, h
 			const py = offsetY - y * scaleY;
 			ctx.fillRect(px, py, 1, 1);
 		}
-  	}
+	}
 }
