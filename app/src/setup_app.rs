@@ -51,18 +51,18 @@ pub fn setup_app(app: &mut App) -> std::result::Result<(), Box<dyn std::error::E
     tokio::spawn(async move {
 
         {
-            let app_handle = app_handle.clone();
-            let cloned_app_handle = app_handle.clone();
+           let cloned = app_handle.clone();
             app_handle.listen_any("update-confirm", move |_| {
-                let app_handle = cloned_app_handle.clone();
-                tokio::spawn(async move {
-                    let app_context = app_handle.state::<Arc<Mutex<AppContext>>>();
+            tokio::spawn({
+                let cloned = cloned.clone();
+                async move {
+                    let app_context = cloned.state::<Arc<Mutex<AppContext>>>();
                     let app_context = app_context.lock().await;
 
                     let updater = app_context.updater.as_ref().unwrap();
                     updater.download_and_install(|_, _| {}, || {}).await.unwrap();
-                    app_handle.restart();
-                });
+                    cloned.restart();
+                }});
             });
         }
 

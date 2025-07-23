@@ -10,7 +10,10 @@ import {
   IconInfinity,
   IconTree,
   IconLeaf,
+  IconFlower,
+  IconSpiral,
 } from "@tabler/icons-react";
+import Spiral from "./components/Spiral";
 
 export type RouteItem = {
 	path: string;
@@ -36,7 +39,13 @@ export const routes: RouteItem[] = [
 		path: "/rose",
 		label: "Rose Curve",
 		element: <Rose />,
-		icon: IconRosette,
+		icon: IconFlower,
+	},
+	{
+		path: "/spiral",
+		label: "Spiral Curve",
+		element: <Spiral />,
+		icon: IconSpiral,
 	},
 	{
 		path: "/lissajous",
