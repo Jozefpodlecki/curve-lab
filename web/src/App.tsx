@@ -4,13 +4,12 @@ import { routes } from "./routes";
 import Loader from "./components/Loader";
 import { useEffect, useRef, useState } from "react";
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
-import { VersionCheckResult } from "./types";
-import { checkSessionAndVersion } from "./utils";
-
+import { getSession, getUpdateCheckCached, updateSession } from "./utils";
+import { VersionCheckResult } from "./models";
 
 const App: React.FC = () => {
 	const unlistenRef = useRef<UnlistenFn | null>(null);
-	const [result, setResult] = useState<VersionCheckResult>({ type: "Checking", text: "Checking for updates" });
+	const [result, setResult] = useState<VersionCheckResult>(getUpdateCheckCached());
 
 	useEffect(() => {
 		onLoad()
@@ -21,9 +20,12 @@ const App: React.FC = () => {
 	}, []);
 
 	async function onLoad() {
-		unlistenRef.current = await listen<VersionCheckResult>("update", (event) => {
+		unlistenRef.current = await listen<VersionCheckResult>("update-check", async (event) => {
 			
 			const checkResult = event.payload;
+			const session = await getSession();
+			session.updateCheckResult = checkResult;
+			updateSession(session);
 
 			if(checkResult.type == "Latest") {
 				setResult(state => {
@@ -42,8 +44,11 @@ const App: React.FC = () => {
 			
 		});
 
-		const versionCheck = await checkSessionAndVersion();
-		versionCheck && setResult(versionCheck);
+		if(result.type === "Checking") {
+			const session = await getSession();
+			updateSession(session);
+			setResult(session.updateCheckResult);
+		}
 	}
 
 	let component;
@@ -51,6 +56,7 @@ const App: React.FC = () => {
 		case "Checking":
 			component = <Loader text={result.text}/>
 			break;
+		case "NewVersionOptional":
 		case "Latest":
 			component = <>
 				<Sidebar />

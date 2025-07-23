@@ -26,28 +26,28 @@ export interface AppState {
 export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [state, setState] = useState<AppState>(defaultState);
 	
-	useEffect(() => {
-		onLoad()
+	// useEffect(() => {
+	// 	onLoad()
 
-		return () => {
+	// 	return () => {
 
-		}
-	}, []);
+	// 	}
+	// }, []);
 
-	async function onLoad() {
-		try {
-			const result = await load();
+	// async function onLoad() {
+	// 	try {
+	// 		const result = await load();
 
-			setState(state => ({
-				...state,
-				isLoading: false,
-				...result
-			}));
+	// 		setState(state => ({
+	// 			...state,
+	// 			isLoading: false,
+	// 			...result
+	// 		}));
 
-		} catch (error) {
-			console.log(error);
-		}
-	}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// }
 
 	return (
 	<AppContext.Provider value={state}>
